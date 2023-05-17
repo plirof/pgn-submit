@@ -58,7 +58,7 @@ if (file_name_param!==-1) {
 
 var jsonrequestInterval = function () {
     console.log("The request was send");
-    return;
+    //return;
     // <hr><div id="probeserver"></div><hr> 
     var jsonrequestIntervaled = new XMLHttpRequest();
     var random_number=Math.random(); // OLD was=Date.prototype.getTime;
@@ -71,7 +71,7 @@ var jsonrequestInterval = function () {
 
             //always add our extra text -unless we got an 404 not found error
             if (jsonrequestIntervaled.status!=404 && jsonrequestIntervaled.status!=0) {
-              document.getElementById("probeserver").innerHTML = response_string;
+              //document.getElementById("probeserver").innerHTML = response_string;
               pgn_contents=response_string;
               console.log("pgn_contents === response_string "+response_string );
             }
@@ -88,7 +88,40 @@ var jsonrequestInterval = function () {
     
 };
 
-if (file_name_param!==-1) jsonrequestInterval();
+
+var jsonrequestBoard = function () {
+    console.log("The request was send");
+    //return;
+    // <hr><div id="probeserver"></div><hr> 
+    var jsonrequestIntervaled = new XMLHttpRequest();
+    var random_number=Math.random(); // OLD was=Date.prototype.getTime;
+    jsonrequestIntervaled.open("GET", server_probe_file+"?"+random_number, true); // Date.prototype.getTime is used to avoid caching
+    jsonrequestIntervaled.send();
+    jsonrequestIntervaled.onreadystatechange = function () {
+        if (jsonrequestIntervaled.readyState == 4) {
+            console.log("The request was made and returned status="+jsonrequestIntervaled.status+" , and results (with random number="+random_number);
+            var response_string =jsonrequestIntervaled.responseText;
+
+            //always add our extra text -unless we got an 404 not found error
+            if (jsonrequestIntervaled.status!=404 && jsonrequestIntervaled.status!=0) {
+              //document.getElementById("probeserver").innerHTML = response_string;
+              pgn_contents=response_string;
+              console.log("pgn_contents === response_string "+response_string );
+              pgnv = PGNV.pgnEdit("board3", {pgn: pgn_contents, position: "", orientation: 'white', locale: 'en'});
+            }
+
+
+
+        }
+    }; // end of jsonrequestIntervaled.onreadystatechange = function () {
+    
+};
+
+
+
+//if (file_name_param!==-1) jsonrequestInterval();
+if (file_name_param!==-1) jsonrequestBoard();
+//if (file_name_param!==-1) {setInterval(jsonrequestInterval, 10000); } //jsonrequestInterval();
 
 //if(server_probing_enabled) {setInterval(jsonrequestInterval, timer_server_probe); }else {jsonrequestInterval();}
 

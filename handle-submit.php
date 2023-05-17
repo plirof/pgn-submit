@@ -10,6 +10,7 @@
 <?php
 /*
 Changes
+- 230516 fixed multiline JS variable assign from PHP problem
 - 230416 -v008a -OK working lichess-import,download pgn
 - 230416e - v07 Ok Seems lichess send
 - 230416c - Ok Seems to work
@@ -82,14 +83,18 @@ echo "<pre>$txt</pre>";
 ?>
 
 
-<script type="text/javascript">
-	const pgn_moves='<?php echo $_REQUEST["hiddenpgntextarea"]; ?>'; //for lichess_import.js
-	const textToWrite=`<?php echo $txt; ?>`; //for download_pgn.js NOTE use backticks
-</script>
+
 <script type="text/javascript" src="lichess_import.js"></script>
 
 <script type="text/javascript" src="download_pgn.js"></script>
 
+<script type="text/javascript">
+	//const pgn_moves='<php echo $_REQUEST["hiddenpgntextarea"]; >'; //for lichess_import.js
+	const pgn_moves='<?php echo str_replace(array("\n","\r","\r\n"),'',$_REQUEST["hiddenpgntextarea"]); ?>'; //for lichess_import.js - 230516 fixed multiline JS variable assign from PHP problem
+	//echo str_replace(array("\n","\r","\r\n"),'',$_REQUEST["hiddenpgntextarea"]);
+	const textToWrite=`<?php echo $txt; ?>`; //for download_pgn.js NOTE use backticks
+</script>
+<HR>
 
 </body> 
 </html>
